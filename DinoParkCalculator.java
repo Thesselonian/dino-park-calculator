@@ -1,61 +1,30 @@
 import java.util.Scanner;
 
 public class DinoParkCalculator {
+    //Declare global variables
+    public static Scanner keyboard = new Scanner(System.in);
+    public static int packageSelector = 0;
+    public static int numberAdults = 0;
+    public static int numberChildren = 0;
+    public static boolean member = false;
     public static void main(String[] args) {
-        
-
-        // Create variables that will be used to calculate cost
-        // boolean member = false;
-        // boolean memberContinue = false;
-        // int adultsPaid = 0;
-        // int childrenPaid = 0;
-        // int selectionValue = 0;
-        // double price = 0;
-
-        // Display options to user
-        // while (selectionValue != 4) {
+        //while loop that will loop through logic for type of party and variables for calculating cost. Breaks out of while loop when option 4 is selected
+        while(packageSelector != 4) {
             PackageDetermination();
-            // System.out.println("Welcome to the Dinosaur Park Party Planner");
-            // System.out.println("Choose the type of party");
-            // System.out.println("1. Group Rate Admission Party");
-            // System.out.println("2. Bare Bones Package");
-            // System.out.println("3. Deluxe Party Package");
-            // System.out.println("4. Quit");
-            // System.out.println("Enter choice: ");
-            // // Assign the selectionValue
-            // selectionValue = keyboard.nextInt();
-            // if(selectionValue > 4 || selectionValue < 0) {
-            //     System.out.println("Please enter a valid selection");
-            //     selectionValue = 0;
-            // }
-            // // Clear the buffer
-            // keyboard.nextLine();
-            
-            
-            // ;
-            // // Logic for a group rate general admission party
-            // if (selectionValue == 1) {
-            //     // Ask how many adults
-            //     System.out.println("How many adults will be attending (age 13+)?");
-            //     adultsPaid = keyboard.nextInt();
-            //     keyboard.nextLine();
-            //     // Ask how many children
-            //     System.out.println("How many children will be attending (age 2-12)?");
-            //     childrenPaid = keyboard.nextInt();
-            //     keyboard.nextLine();
-            //     price = ((adultsPaid * 5) + (childrenPaid * 4));
-
-            // }
-        // }
-
-        // keyboard.close();
+            if(packageSelector == 4) {
+                break;
+            }
+            DetermineMembership();
+            NumberOfParticipants();
+            CalculateCost(numberAdults, numberChildren);
+            CalculateAnotherGroup();
+        }
+        System.out.println("Goodbye");
     }   
 
-    static void PackageDetermination() {
-        // Create new instance of keyboard scanner
-        Scanner keyboard = new Scanner(System.in);
-        int selectionValue = 0;
-        while (selectionValue == 0) {
+    public static void PackageDetermination() {
+        // Method for selecting which package
+        while (packageSelector == 0) {
             System.out.println("Welcome to the Dinosaur Park Party Planner");
             System.out.println("Choose the type of party");
             System.out.println("1. Group Rate Admission Party");
@@ -63,45 +32,18 @@ public class DinoParkCalculator {
             System.out.println("3. Deluxe Party Package");
             System.out.println("4. Quit");
             System.out.println("Enter choice: ");
-            // Assign the selectionValue
-            selectionValue = keyboard.nextInt();
-            if(selectionValue > 4 || selectionValue < 0) {
+            // Assign the packageSelector
+            packageSelector = keyboard.nextInt();
+            // Catch if an invalid response is entered. 
+            if(packageSelector > 4 || packageSelector < 1) {
                 System.out.println("Please enter a valid selection");
-                selectionValue = 0;
-            }
-            switch (selectionValue) {
-                case (1): {
-                    GroupRateGeneralAdmission();
-                }
-                case (2): {
-                    BareBonesPackage();
-                }
+                packageSelector = 0;
             }
         }
     }
-    static void GroupRateGeneralAdmission() {
-        Scanner keyboard = new Scanner(System.in);
-        int adults = 0;
-        int children = 0;
-        double price = 0;
-        System.out.println("How many adults will be attending (age 13+)?");
-        adults = keyboard.nextInt();
-        keyboard.nextLine();
-        System.out.println("How many Children will be attending (age 2-12)?");
-        children = keyboard.nextInt();
-        keyboard.nextLine();
-        price = ((adults * 5) + (children * 4));
-        System.out.println("Your total price will be " + price);
-        CalculateAnotherGroup();
-    }
 
-    static void BareBonesPackage() {
-        DetermineMembership();
-    }
-
-    static void DetermineMembership() {
-        Scanner keyboard = new Scanner(System.in);
-        boolean member = false;
+    public static void DetermineMembership() {
+        // Method for determining if user is a member
         boolean memberContinue = false;
         // Ask if user is a member
         while (!memberContinue) {
@@ -119,20 +61,79 @@ public class DinoParkCalculator {
             }
         }
     }
-    static void CalculateAnotherGroup() {
-        Scanner keyboard = new Scanner(System.in);
-        boolean calculateAnotherGroup = false;
+
+    public static void NumberOfParticipants() {
+        // Ask user to input number of adults and children.
+        System.out.println("How many adults will be attending (age 13+)?");
+        numberAdults = keyboard.nextInt();
+        keyboard.nextLine();
+        System.out.println("How many Children will be attending (age 2-12)?");
+        numberChildren = keyboard.nextInt();
+        // keyboard.close();
+    }
+
+    public static void CalculateCost(int numberAdults, int numberChildren) {
+        // Method for calculating cost
+        int price = 0;
+        // Switch for which package is selected. 
+        switch (packageSelector) {
+            case (1): {
+                price = ((numberAdults * 5) + (numberChildren * 4));
+                System.out.println("Your total price will be " + price);
+            }
+            case (2): {
+                if(member) {
+                    if((numberAdults + numberChildren) <= 12) {
+                        price = 99;
+                    }
+                    else {
+                        price = (99 + ((numberAdults + numberChildren)-12)*3);
+                    }
+                }
+                else {
+                    if((numberAdults + numberChildren) <= 12) {
+                        price = 119;
+                    }
+                    else {
+                        price = (119 + ((numberAdults + numberChildren)-12)*3);
+                    }
+                }
+            }
+            case (3): {
+                if(member) {
+                    if((numberAdults + numberChildren) <= 12) {
+                        price = 175;
+                    }
+                    else {
+                        price = (175 + ((numberAdults + numberChildren)-12)*3);
+                    }
+                }
+                else {
+                    if((numberAdults + numberChildren) <= 12) {
+                        price = 199;
+                    }
+                    else {
+                        price = (199 + ((numberAdults + numberChildren)-12)*3);
+                    }
+                }
+            }
+        }
+        System.out.println("The cost of your party is " + price + " .");
+    }
+    
+    public static void CalculateAnotherGroup() {
+        // Ask user if they would like to calculate another group
         int anotherGroupInput = 0;
         while(anotherGroupInput == 0 ) {
             System.out.println("Would you like to calculate the price for a new group? Enter 1 for yes or 2 for no.");
-            
             anotherGroupInput = keyboard.nextInt();
             if(anotherGroupInput == 1) {
-                calculateAnotherGroup = true;
-                PackageDetermination();
+                // if the user would like to calculate another group set package selector to 0 so that PackageDetermination method will trigger in the original while loop
+                packageSelector = 0;
             }
             else if(anotherGroupInput == 2) {
-                calculateAnotherGroup = false;
+                // If user does not wish to calculate another group set packageSelector to 4 so that original while loop breaks and program stops.
+                packageSelector = 4;
             }
             else {
                 System.out.println("Please enter a valid response");
