@@ -7,6 +7,7 @@ public class DinoParkCalculator {
         
         // Create variables that will be used to calculate cost
         boolean member = false;
+        boolean memberContinue = false;
         int additionalAdults = 0;
         int additionalChildren = 0;
         int selectionValue = 0;
@@ -19,7 +20,27 @@ public class DinoParkCalculator {
         System.out.println("3. Deluxe Party Package");
         System.out.println("4. Quit");
         System.out.println("Enter choice: ");
-        keyboard.nextInt();
+        // Assign the selectionValue
+        selectionValue = keyboard.nextInt();
+        // Clear the buffer
+        keyboard.nextLine();
+        // Ask if user is a member
+        while(memberContinue == false){
+            System.out.println("Are you a member? Press 1 for yes and 2 for no.");
+            int memberInput = keyboard.nextInt();
+            if(memberInput == 1) {
+                member = true;
+                memberContinue = true;
+            }
+            else if(memberInput == 2) {
+                member = false;
+                memberContinue = true;
+            }
+            else {
+                System.out.println("Please enter a valid selection");
+            }
+        };
+        
 
         keyboard.close();
     }
